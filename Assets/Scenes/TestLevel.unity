@@ -407,7 +407,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d3e23dc3e91ce84297c4becf1e17cee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1874406424}
   m_SourcePrefab: {fileID: 100100000, guid: 9d3e23dc3e91ce84297c4becf1e17cee, type: 3}
 --- !u!1 &508698310
 GameObject:
@@ -425,7 +428,7 @@ GameObject:
   - component: {fileID: 508698311}
   m_Layer: 0
   m_Name: FreeLook Camera
-  m_TagString: Untagged
+  m_TagString: ThirdPersonCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -950,16 +953,60 @@ Transform:
   - {fileID: 591479010}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1277556526 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2818071593275192548, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
+  m_PrefabInstance: {fileID: 5627552480536324193}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1277556531 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3193084581976288862, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
   m_PrefabInstance: {fileID: 5627552480536324193}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1277556533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277556526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbdb62cef50c92449575442d9149a21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1511671932 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7805526502336462566, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
   m_PrefabInstance: {fileID: 5627552480536324193}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1874406421 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d3e23dc3e91ce84297c4becf1e17cee, type: 3}
+  m_PrefabInstance: {fileID: 240310947}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1874406424
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874406421}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -478882678752539408, guid: 9d3e23dc3e91ce84297c4becf1e17cee, type: 3}
 --- !u!1001 &5627552480536324193
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -968,6 +1015,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1189169158820019761, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
+      propertyPath: playerSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 2f235ce694e337c429091bc15db9a60e, type: 2}
     - target: {fileID: 2818071593275192548, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
       propertyPath: m_Name
       value: Zero Suit Samus
@@ -1015,7 +1066,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2818071593275192548, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1277556533}
   m_SourcePrefab: {fileID: 100100000, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

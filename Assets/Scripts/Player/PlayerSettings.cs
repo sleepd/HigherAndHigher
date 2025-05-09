@@ -5,4 +5,5 @@ public class PlayerSettings : ScriptableObject
 {
     public int maxHealth;
     public float jumpForce;
+    public float rotationSpeed;
 }

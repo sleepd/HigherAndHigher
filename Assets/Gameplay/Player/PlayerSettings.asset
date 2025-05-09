@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de15c17b61fec248ac566533c51f048, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  jumpForce: 0
+  rotationSpeed: 10
