@@ -1,104 +1,9 @@
 fileFormatVersion: 2
-guid: 9a4206354147b0949815bcdee4d8b25f
+guid: 9c103e2a02f2a87499a01d7100915a8b
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__25mat
-    second: {fileID: 2100000, guid: 6ea40e6c2fe15d0458a73e7ce5140bac, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__26mat
-    second: {fileID: 2100000, guid: d33ae0a2f23fac94ba03a9380767731d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__27mat
-    second: {fileID: 2100000, guid: b63c4084f17c6b74486c3221b7a530a6, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__28mat
-    second: {fileID: 2100000, guid: e48df2a2b87f39d498ff2d7f1571da65, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__29mat
-    second: {fileID: 2100000, guid: cb47644f36a074143af19e41fd58595d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__30mat
-    second: {fileID: 2100000, guid: 57e5574d84d0c1d47ad382b7702039b4, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__31mat
-    second: {fileID: 2100000, guid: 1089d66c21f13e4458e2d3df2f03a62a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__32mat
-    second: {fileID: 2100000, guid: 1ed7c4ddcb7fa1449b5f68eb293e2d8d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__33mat
-    second: {fileID: 2100000, guid: 1c419a15e625d3e45a60d81023c0e7dd, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__34mat
-    second: {fileID: 2100000, guid: 1e49070f944fb3b47aed9863c6bf6dbf, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__35mat
-    second: {fileID: 2100000, guid: efb15b18dbfe0d745bfcce041dce0f51, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__36mat
-    second: {fileID: 2100000, guid: 48df440a8cb56894399c1c025b12eacb, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__37mat
-    second: {fileID: 2100000, guid: 537d025a2f13062459b350b297164b8e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__38mat
-    second: {fileID: 2100000, guid: f8e179fb058c2e9468f571c884b9f1ca, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__39mat
-    second: {fileID: 2100000, guid: e263149e577faf3499a50e82615ecc82, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__40mat
-    second: {fileID: 2100000, guid: b5a002d1b17fa17478b45e49c5a40380, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__41mat
-    second: {fileID: 2100000, guid: ec2ee48c205ed9243b254c596ea6f615, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__42mat
-    second: {fileID: 2100000, guid: ca913c9305ee0184c9f9631a3e82baa2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material__43mat
-    second: {fileID: 2100000, guid: 0a4c181b653ac3c4bbaf3dfba5abc90b, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -124,7 +29,36 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Running
+      takeName: mixamo.com
+      internalID: -203655887218126122
+      firstFrame: 0
+      lastFrame: 69
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -171,7 +105,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human:
@@ -1009,11 +943,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 9a4206354147b0949815bcdee4d8b25f, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
