@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Animator _animator;
     private InputController _inputController;
     private Vector2 _moveInput;
+    private GroundCheck _groundCheck;
 
 
     void Awake()
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _cam = GameObject.FindWithTag("ThirdPersonCamera").transform;
         _animator = GetComponent<Animator>();
+        _groundCheck = GetComponent<GroundCheck>();
         _inputController = GetComponent<InputController>();
         if (_inputController == null)
         {
@@ -48,22 +50,26 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_moveInput.sqrMagnitude > 0.01f)
-        // rotate character
-        {        
-            Vector3 camForward = _cam.forward;
-            camForward.y = 0;
-            camForward.Normalize();
-            Vector3 camRight = _cam.right;
-            camRight.y = 0f;
-            camRight.Normalize();
-            Vector3 moveDirection = camForward * _moveInput.y + camRight * _moveInput.x;
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, playerSettings.rotationSpeed * Time.deltaTime);
+        if (_groundCheck.IsGrounded)
+        {
+            if (_moveInput.sqrMagnitude > 0.01f)
+            // rotate character
+            {        
+                Vector3 camForward = _cam.forward;
+                camForward.y = 0;
+                camForward.Normalize();
+                Vector3 camRight = _cam.right;
+                camRight.y = 0f;
+                camRight.Normalize();
+                Vector3 moveDirection = camForward * _moveInput.y + camRight * _moveInput.x;
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, playerSettings.rotationSpeed * Time.deltaTime);
+            }
+
+
+            _animator.SetFloat("Velocity", _moveInput.magnitude);
         }
-
-
-        _animator.SetFloat("Velocity", _moveInput.magnitude);
+        
         
 
     }

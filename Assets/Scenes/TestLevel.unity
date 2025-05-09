@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 91337533}
   - component: {fileID: 91337532}
   - component: {fileID: 91337531}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,6 +404,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ramp
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9d3e23dc3e91ce84297c4becf1e17cee, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -667,7 +671,7 @@ GameObject:
   - component: {fileID: 649221976}
   - component: {fileID: 649221978}
   - component: {fileID: 649221977}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -975,6 +979,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfbdb62cef50c92449575442d9149a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1277556534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277556526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d225d5b53d3eda4fa1bd19acda4d416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.3
+  distance: 0.3
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1511671932 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7805526502336462566, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
@@ -1070,6 +1091,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2818071593275192548, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1277556533}
+    - targetCorrespondingSourceObject: {fileID: 2818071593275192548, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1277556534}
   m_SourcePrefab: {fileID: 100100000, guid: 3565938497ad5dd4394a182bfed31a36, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
