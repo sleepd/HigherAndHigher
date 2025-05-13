@@ -6,6 +6,12 @@ public class PlayerIdlingState : PlayerGroundedState
     {
     }
 
+    public override void Enter()
+    {
+        base.Enter();
+        stateMachine.PlayerController.velocity = Vector3.zero;
+    }
+
     public override void HandleInput()
     {
         base.HandleInput();

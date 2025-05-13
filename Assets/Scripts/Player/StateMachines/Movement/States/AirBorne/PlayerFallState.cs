@@ -8,9 +8,21 @@ public class PlayerFallState : PlayerAirBorneState
         
     }
 
-    public override void Update()
+    public override void Enter()
     {
-        base.Update();
-        if (stateMachine.PlayerController.velocity.y < 0) IsJumping = false;
+        base.Enter();
+        stateMachine.PlayerController.Animator.SetBool("Falling", true);
     }
+
+    public override void Exit()
+    {
+        base.Exit();
+        stateMachine.PlayerController.Animator.SetBool("Falling", false);
+    }
+
+    // public override void Update()
+    // {
+    //     base.Update();
+    //     if (stateMachine.PlayerController.velocity.y < 0) IsJumping = false;
+    // }
 }

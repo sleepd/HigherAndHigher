@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
   MaxHealth: 0
-  JumpForce: 0
-  RotationSpeed: 10
-  MovementDeadZone: 0.1
+  JumpForce: 7
+  Gravity: 20
+  RotationSpeed: 20
+  MovementDeadZone: 0.2
   WalkingToRunningThreshold: 0.5

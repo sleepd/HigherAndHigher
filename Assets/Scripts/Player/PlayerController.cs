@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
         //     _animator.SetFloat("Velocity", _moveInput.magnitude);
         // }
         // CharacterController.Move(velocity * Time.deltaTime);
+        
     }
 
     void FixedUpdate()

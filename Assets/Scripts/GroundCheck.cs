@@ -4,11 +4,10 @@ using UnityEngine;
 public class GroundCheck : MonoBehaviour
 {   
     public bool IsGrounded { get; private set;}
-    [SerializeField] float radius = 0.3f;
-    [SerializeField] float distance = 0.3f;
+    [SerializeField] Vector3 origin;
+    [SerializeField] Vector3 boxSize = new Vector3(0.5f, 0.1f, 0.5f);
     [SerializeField] LayerMask groundMask;
     
-
 
     // Update is called once per frame
     void Update()
@@ -18,27 +17,15 @@ public class GroundCheck : MonoBehaviour
 
     private void Check()
     {
-        Vector3 origin = transform.position + Vector3.up * 0.4f;
-        IsGrounded = Physics.SphereCast(origin, radius, Vector3.down, out RaycastHit hit, distance, groundMask, QueryTriggerInteraction.Ignore);
+
+        IsGrounded = Physics.CheckBox(origin + transform.position, boxSize * 0.5f, Quaternion.identity, groundMask);
     }
 
     private void OnDrawGizmos()
-{
-    if (!Application.isPlaying) return;
+    {
+        if (!Application.isPlaying) return;
 
-    Vector3 origin = transform.position + Vector3.up * 0.1f;
-    Vector3 direction = Vector3.down;
-
-    // 起点
-    Gizmos.color = Color.green;
-    Gizmos.DrawWireSphere(origin, radius);
-
-    // 终点
-    Vector3 end = origin + direction * distance;
-    Gizmos.color = Color.yellow;
-    Gizmos.DrawWireSphere(end, radius);
-
-    // 连接线
-    Debug.DrawLine(origin, end, Color.red);
-}
+        Gizmos.color = IsGrounded ? Color.green : Color.red;
+        Gizmos.DrawWireCube(origin+ transform.position, boxSize);
+    }
 }

@@ -26,6 +26,7 @@ public class PlayerGroundedState : PlayerMovementState
         {
             stateMachine.ChangeState(stateMachine.FallState);
         }
+        stateMachine.PlayerController.velocity.y = -1f;
     }
 
     public override void HandleInput()
