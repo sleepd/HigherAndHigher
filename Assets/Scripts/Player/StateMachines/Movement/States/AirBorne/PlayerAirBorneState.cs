@@ -12,10 +12,10 @@ public class PlayerAirBorneState : PlayerMovementState
     public override void Enter()
     {
         base.Enter();
+        if (stateMachine.PreviousState is PlayerAirBorneState) return;
+        
         preservedVelocity = (stateMachine.PlayerController.transform.position - stateMachine.PlayerController.lastPosition) / Time.deltaTime;
         preservedVelocity.y = 0;
-        // preservedVelocity /= Time.deltaTime;
-        // keep forward
         stateMachine.PlayerController.velocity += preservedVelocity;
     }
 
