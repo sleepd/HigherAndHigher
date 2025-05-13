@@ -12,8 +12,11 @@ public class PlayerAirBorneState : PlayerMovementState
     public override void Enter()
     {
         base.Enter();
-        preservedVelocity = stateMachine.PlayerController.Animator.deltaPosition;
+        preservedVelocity = (stateMachine.PlayerController.transform.position - stateMachine.PlayerController.lastPosition) / Time.deltaTime;
         preservedVelocity.y = 0;
+        // preservedVelocity /= Time.deltaTime;
+        // keep forward
+        stateMachine.PlayerController.velocity += preservedVelocity;
     }
 
     public override void Update()
@@ -22,8 +25,7 @@ public class PlayerAirBorneState : PlayerMovementState
         stateMachine.PlayerController.velocity.y -= stateMachine.PlayerController.PlayerSettings.Gravity * Time.deltaTime;
         stateMachine.PlayerController.velocity.y = Mathf.Max(stateMachine.PlayerController.velocity.y, -10);
 
-        // keep forward
-        stateMachine.PlayerController.velocity += preservedVelocity;
+        
 
         if (stateMachine.PlayerController.IsGrounded && !IsJumping)
         {

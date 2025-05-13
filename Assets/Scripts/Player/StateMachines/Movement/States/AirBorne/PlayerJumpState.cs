@@ -27,6 +27,7 @@ public class PlayerJumpState : PlayerAirBorneState
     private void Jump()
     {
         stateMachine.PlayerController.velocity.y = stateMachine.PlayerController.PlayerSettings.JumpForce;
+        stateMachine.PlayerController.Animator.SetTrigger("Jump");
         IsJumping = true;
     }
 }

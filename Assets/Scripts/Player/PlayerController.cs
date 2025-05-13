@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +18,9 @@ public class PlayerController : MonoBehaviour
     public CharacterController CharacterController { get; private set;}
     public Vector3 velocity;
     public bool IsGrounded {get {return _groundCheck.IsGrounded;}}
+    
+    // buffer of preframe position, for caculate offset
+    public Vector3 lastPosition { get; private set;}
 
 
     void Awake()
@@ -83,7 +88,7 @@ public class PlayerController : MonoBehaviour
         //     _animator.SetFloat("Velocity", _moveInput.magnitude);
         // }
         // CharacterController.Move(velocity * Time.deltaTime);
-        
+        lastPosition = transform.position;
     }
 
     void FixedUpdate()
@@ -93,7 +98,10 @@ public class PlayerController : MonoBehaviour
 
     void OnAnimatorMove()
     {
+
         Vector3 rootMotionDelta = Animator.deltaPosition;
+        
+
         rootMotionDelta += velocity * Time.deltaTime;
         CharacterController.Move(rootMotionDelta);
     }
