@@ -14,7 +14,12 @@ public class PlayerAirBorneState : PlayerMovementState
         base.Enter();
         if (stateMachine.PreviousState is PlayerAirBorneState) return;
         
-        preservedVelocity = (stateMachine.PlayerController.transform.position - stateMachine.PlayerController.lastPosition) / Time.deltaTime;
+        Vector3 prePos = stateMachine.PlayerController.lastPosition;
+        prePos.y = 0;
+        Vector3 curPos = stateMachine.PlayerController.transform.position;
+        curPos.y = 0;
+        // preservedVelocity = (stateMachine.PlayerController.transform.position - stateMachine.PlayerController.lastPosition) / Time.deltaTime;
+        preservedVelocity = (curPos - prePos) / Time.deltaTime;
         preservedVelocity.y = 0;
         stateMachine.PlayerController.velocity += preservedVelocity;
     }

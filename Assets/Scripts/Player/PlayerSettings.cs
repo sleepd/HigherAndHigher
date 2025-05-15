@@ -5,6 +5,7 @@ public class PlayerSettings : ScriptableObject
 {
     public int MaxHealth;
     public float JumpForce;
+    public float JumpInputThreshold;
     public float Gravity;
     public float RotationSpeed;
     public float MovementDeadZone = 0.1f;
