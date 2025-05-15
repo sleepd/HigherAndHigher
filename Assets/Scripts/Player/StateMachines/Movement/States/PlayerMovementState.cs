@@ -5,9 +5,12 @@ public class PlayerMovementState : IState
 {
     protected PlayerMovementStateMachine stateMachine;
     protected Vector2 movementInput;
+    protected PlayerController playerController;
     public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine)
     {
         stateMachine = playerMovementStateMachine;
+        playerController = stateMachine.PlayerController;
+
     }
 
     #region IState Methods

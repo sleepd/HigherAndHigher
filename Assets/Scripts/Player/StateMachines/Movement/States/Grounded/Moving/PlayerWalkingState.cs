@@ -18,6 +18,6 @@ public class PlayerWalkingState : PlayerGroundedState
         {
             stateMachine.ChangeState(stateMachine.RunningState);
         }
-        stateMachine.PlayerController.RotateCharacter();
+        stateMachine.PlayerController.RotateCharacter(stateMachine.PlayerController.PlayerSettings.RotationSpeed);
     }
 }

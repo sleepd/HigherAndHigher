@@ -32,6 +32,7 @@ public class PlayerJumpState : PlayerAirBorneState
         base.Update();
         jumpingTime += Time.deltaTime;
 
+        // character will keep jumping till minimum jump time
         if (isLowJump && jumpingTime > stateMachine.PlayerController.PlayerSettings.JumpInputThreshold)
         {
             // add a extra gravity
@@ -47,7 +48,19 @@ public class PlayerJumpState : PlayerAirBorneState
 
     private void Jump()
     {
+        float jumpForwardForce;
+        if (stateMachine.PlayerController.moveInput.magnitude < stateMachine.PlayerController.PlayerSettings.WalkingToRunningThreshold)
+        {
+            jumpForwardForce = stateMachine.PlayerController.PlayerSettings.JumpForwardForceWalking;
+        }
+        else
+        {
+            jumpForwardForce = stateMachine.PlayerController.PlayerSettings.JumpForwardForceRunning;
+        }
+
         jumpingTime = 0;
+        Vector3 jumpDirection = stateMachine.PlayerController.GetInputDirection();
+        stateMachine.PlayerController.velocity = jumpDirection * jumpForwardForce;
         stateMachine.PlayerController.velocity.y = stateMachine.PlayerController.PlayerSettings.JumpForce;
         stateMachine.PlayerController.Animator.SetTrigger("Jump");
         IsJumping = true;

@@ -10,17 +10,18 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController _controller;
     private Transform _cam;
-    public Animator Animator {get; private set;}
+    public Animator Animator { get; private set; }
     public InputController InputController;
-    public Vector2 moveInput {get; private set;}
+    public Vector2 moveInput { get; private set; }
     private GroundCheck _groundCheck;
     private PlayerMovementStateMachine _movementStateMachine;
-    public CharacterController CharacterController { get; private set;}
+    public CharacterController CharacterController { get; private set; }
     public Vector3 velocity;
-    public bool IsGrounded {get {return _groundCheck.IsGrounded;}}
-    
+    private Vector3 _rootMotionDelta;
+    public bool IsGrounded { get { return _groundCheck.IsGrounded; } }
+
     // buffer of preframe position, for caculate offset
-    public Vector3 lastPosition { get; private set;}
+    public Vector3 lastPosition { get; private set; }
 
 
     void Awake()
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     void OnEnable()
     {
-        if(InputController != null)
+        if (InputController != null)
         {
             InputController.MoveEvent += HandleMoveInput;
         }
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
     void OnDisable()
     {
-        if(InputController != null)
+        if (InputController != null)
         {
             InputController.MoveEvent -= HandleMoveInput;
         }
@@ -70,25 +71,12 @@ public class PlayerController : MonoBehaviour
 
         _movementStateMachine.HandleInput();
         _movementStateMachine.Update();
-        // if (_groundCheck.IsGrounded)
-        // {
-        //     if (_moveInput.sqrMagnitude > 0.01f)
-        //     // rotate character
-        //     {        
-        //         Vector3 camForward = _cam.forward;
-        //         camForward.y = 0;
-        //         camForward.Normalize();
-        //         Vector3 camRight = _cam.right;
-        //         camRight.y = 0f;
-        //         camRight.Normalize();
-        //         Vector3 moveDirection = camForward * _moveInput.y + camRight * _moveInput.x;
-        //         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, playerSettings.rotationSpeed * Time.deltaTime);
-        //     }
-        //     _animator.SetFloat("Velocity", _moveInput.magnitude);
-        // }
-        // CharacterController.Move(velocity * Time.deltaTime);
         lastPosition = transform.position;
+
+        // move character
+        Vector3 moveDelta = _rootMotionDelta + velocity * Time.deltaTime;
+        CharacterController.Move(moveDelta);
+
     }
 
     void FixedUpdate()
@@ -98,15 +86,17 @@ public class PlayerController : MonoBehaviour
 
     void OnAnimatorMove()
     {
-
-        Vector3 rootMotionDelta = Animator.deltaPosition;
-        
-
-        rootMotionDelta += velocity * Time.deltaTime;
-        CharacterController.Move(rootMotionDelta);
+        _rootMotionDelta = Animator.deltaPosition;
     }
 
-    public void RotateCharacter()
+    public void RotateCharacter(float rotationSpeed)
+    {
+        Vector3 moveDirection = GetInputDirection();
+        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    public Vector3 GetInputDirection()
     {
         Vector3 camForward = _cam.forward;
         camForward.y = 0;
@@ -114,8 +104,6 @@ public class PlayerController : MonoBehaviour
         Vector3 camRight = _cam.right;
         camRight.y = 0f;
         camRight.Normalize();
-        Vector3 moveDirection = camForward * moveInput.y + camRight * moveInput.x;
-        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, PlayerSettings.RotationSpeed * Time.deltaTime);
+        return camForward * moveInput.y + camRight * moveInput.x;
     }
 }
