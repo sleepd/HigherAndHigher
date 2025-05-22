@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
   MaxHealth: 0
-  JumpForce: 8
+  JumpForce: 7
   JumpInputThreshold: 0.15
   JumpBufferingThreshold: 0.2
+  JumpForwardForceWalking: 1.5
+  JumpForwardForceRunning: 4
   Gravity: 20
   RotationSpeed: 20
   MovementDeadZone: 0.2
   WalkingToRunningThreshold: 0.5
+  BulletPrefab: {fileID: 1995136710323479580, guid: 4c5921c5c3e2f6249bac4ae3d3690201, type: 3}

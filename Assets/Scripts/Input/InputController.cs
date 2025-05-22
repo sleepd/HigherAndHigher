@@ -14,6 +14,8 @@ public class InputController : MonoBehaviour
     public event Action AttackEvent;
     public event Action RollEvent;
     public event Action InteractEvent;
+    public event Action AimEvent;
+    public event Action AimCanceledEvent;
 
     void Awake()
     {
@@ -30,7 +32,19 @@ public class InputController : MonoBehaviour
         _input.Player.Attack.performed += OnAttackPerformed;
         _input.Player.Roll.performed += OnRollPerformed;
         _input.Player.Interact.performed += OnInteractPerformed;
+        _input.Player.Aim.performed += OnAimPerformed;
+        _input.Player.Aim.canceled += OnAimCanceled;
 
+    }
+
+    private void OnAimCanceled(InputAction.CallbackContext context)
+    {
+        AimCanceledEvent?.Invoke();
+    }
+
+    private void OnAimPerformed(InputAction.CallbackContext context)
+    {
+        AimEvent?.Invoke();
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)
@@ -74,6 +88,8 @@ public class InputController : MonoBehaviour
         _input.Player.Attack.performed -= OnAttackPerformed;
         _input.Player.Roll.performed -= OnRollPerformed;
         _input.Player.Interact.performed -= OnInteractPerformed;
+        _input.Player.Aim.performed -= OnAimPerformed;
+        _input.Player.Aim.canceled -= OnAimCanceled;
         _input.Player.Disable();
     }
 

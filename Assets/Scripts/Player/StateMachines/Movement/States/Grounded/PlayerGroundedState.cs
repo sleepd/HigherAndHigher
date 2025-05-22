@@ -11,12 +11,16 @@ public class PlayerGroundedState : PlayerMovementState
     {
         base.Enter();
         stateMachine.PlayerController.InputController.JumpEvent += HandleJumpInput;
+        stateMachine.PlayerController.InputController.AimEvent += HandleAim;
     }
+
+
 
     public override void Exit()
     {
         base.Exit();
         stateMachine.PlayerController.InputController.JumpEvent -= HandleJumpInput;
+        stateMachine.PlayerController.InputController.AimEvent -= HandleAim;
     }
 
     public override void Update()
@@ -37,6 +41,11 @@ public class PlayerGroundedState : PlayerMovementState
     public virtual void HandleJumpInput()
     {
         stateMachine.ChangeState(stateMachine.JumpState);
+    }
+    
+    protected void HandleAim()
+    {
+        stateMachine.ChangeState(stateMachine.AimingState);
     }
 
 }

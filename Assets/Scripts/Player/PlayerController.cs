@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public PlayerSettings PlayerSettings;
 
     private CharacterController _controller;
-    private Transform _cam;
+    public CinemachineCamera ThirdPersonCam;
+    public CinemachineCamera AimingCam;
+
     public Animator Animator { get; private set; }
     public InputController InputController;
     public Vector2 moveInput { get; private set; }
@@ -22,12 +26,16 @@ public class PlayerController : MonoBehaviour
 
     // buffer of preframe position, for caculate offset
     public Vector3 lastPosition { get; private set; }
+    LayerMask targetLayers;
+    [SerializeField] Transform firePosition;
+    [SerializeField] float aimOffsetY = 0f;
 
 
     void Awake()
     {
         _controller = GetComponent<CharacterController>();
-        _cam = GameObject.FindWithTag("ThirdPersonCamera").transform;
+        ThirdPersonCam = GameObject.FindWithTag("ThirdPersonCamera").GetComponent<CinemachineCamera>();
+        AimingCam = GameObject.FindWithTag("AimCamera").GetComponent<CinemachineCamera>();
         Animator = GetComponent<Animator>();
         _groundCheck = GetComponent<GroundCheck>();
         InputController = GetComponent<InputController>();
@@ -37,6 +45,7 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("InputController component not found on this GameObject. Ensure it is attached.");
         }
         _movementStateMachine = new(this);
+        targetLayers = LayerMask.GetMask("Ground", "Enemy");
     }
 
     void Start()
@@ -96,14 +105,38 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
+    public void AlignCamera()
+    {
+        Vector3 cameraDir = ThirdPersonCam.transform.forward;
+        cameraDir.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(cameraDir);
+        transform.rotation = targetRotation;
+
+    }
+
     public Vector3 GetInputDirection()
     {
-        Vector3 camForward = _cam.forward;
+        Vector3 camForward = ThirdPersonCam.transform.forward;
         camForward.y = 0;
         camForward.Normalize();
-        Vector3 camRight = _cam.right;
+        Vector3 camRight = ThirdPersonCam.transform.right;
         camRight.y = 0f;
         camRight.Normalize();
         return camForward * moveInput.y + camRight * moveInput.x;
+    }
+
+    public void Shoot()
+    {
+        GameObject bullet = Instantiate(PlayerSettings.BulletPrefab, firePosition.position, ThirdPersonCam.transform.rotation);
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f + aimOffsetY * Screen.height, 0));
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, targetLayers))
+        {
+            Vector3 hitPoint = hit.point;
+            bullet.GetComponent<Bullet>().SetTargetPosition(hitPoint);
+        }
+        else
+        {
+            bullet.GetComponent<Bullet>().SetTargetDir(ThirdPersonCam.transform.forward);
+        }
     }
 }

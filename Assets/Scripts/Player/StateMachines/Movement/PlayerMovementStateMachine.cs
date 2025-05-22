@@ -8,6 +8,7 @@ public class PlayerMovementStateMachine : StateMachine
     public PlayerController PlayerController { get; }
     public PlayerJumpState JumpState { get; }
     public PlayerFallState FallState { get; }
+    public PlayerAimingState AimingState { get; }
 
     public PlayerMovementStateMachine(PlayerController playerController)
     {
@@ -16,6 +17,7 @@ public class PlayerMovementStateMachine : StateMachine
         RunningState = new(this);
         JumpState = new(this);
         FallState = new(this);
+        AimingState = new(this);
         PlayerController = playerController;
     }
 

@@ -13,4 +13,5 @@ public class PlayerSettings : ScriptableObject
     public float RotationSpeed;
     public float MovementDeadZone = 0.1f;
     public float WalkingToRunningThreshold = 0.5f;
+    public GameObject BulletPrefab;
 }
