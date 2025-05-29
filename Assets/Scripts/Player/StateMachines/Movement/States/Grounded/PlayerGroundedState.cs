@@ -35,7 +35,8 @@ public class PlayerGroundedState : PlayerMovementState
 
     public override void HandleInput()
     {
-        stateMachine.PlayerController.Animator.SetFloat("Velocity", stateMachine.PlayerController.moveInput.sqrMagnitude);
+        float velocity = stateMachine.PlayerController.moveInput.sqrMagnitude * stateMachine.PlayerController.MoveSpeedFactor;
+        stateMachine.PlayerController.Animator.SetFloat("Velocity", velocity);
     }
 
     public virtual void HandleJumpInput()

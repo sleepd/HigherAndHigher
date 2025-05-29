@@ -1,19 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+public enum CameraTag
+    {
+        ThirdPerson,
+        Aiming
+    }
 
 public class PlayerController : MonoBehaviour
 {
     public PlayerSettings PlayerSettings;
 
     private CharacterController _controller;
-    public CinemachineCamera ThirdPersonCam;
-    public CinemachineInputAxisController ThirdPersonCamInputController;
-    public CinemachineCamera AimingCam;
+    public List<CinemachineCamera> cameras;
+    
+    // public CinemachineCamera ThirdPersonCam;
+    // public CinemachineInputAxisController ThirdPersonCamInputController;
+    // public CinemachineCamera AimingCam;
+    public CinemachineCamera CurrentCam;
     public Transform AimTarget;
 
     public Animator Animator { get; private set; }
@@ -28,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     // buffer of preframe position, for caculate offset
     public Vector3 lastPosition { get; private set; }
+    public float MoveSpeedFactor = 1f;
     LayerMask targetLayers;
     [SerializeField] Transform firePosition;
     [SerializeField] float aimOffsetY = 0f;
@@ -36,9 +46,11 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         _controller = GetComponent<CharacterController>();
-        ThirdPersonCam = GameObject.FindWithTag("ThirdPersonCamera").GetComponent<CinemachineCamera>();
-        ThirdPersonCamInputController = ThirdPersonCam.GetComponent<CinemachineInputAxisController>();
-        AimingCam = GameObject.FindWithTag("AimCamera").GetComponent<CinemachineCamera>();
+        cameras = new();
+        cameras.Add(GameObject.FindWithTag("ThirdPersonCamera").GetComponent<CinemachineCamera>());
+        cameras.Add(GameObject.FindWithTag("AimCamera").GetComponent<CinemachineCamera>());
+        Debug.Log(cameras.Count);
+        CurrentCam = cameras[0];
         Animator = GetComponent<Animator>();
         _groundCheck = GetComponent<GroundCheck>();
         InputController = GetComponent<InputController>();
@@ -113,7 +125,7 @@ public class PlayerController : MonoBehaviour
 
     public void AlignCamera()
     {
-        Vector3 cameraDir = ThirdPersonCam.transform.forward;
+        Vector3 cameraDir = CurrentCam.transform.forward;
         cameraDir.y = 0;
         Quaternion targetRotation = Quaternion.LookRotation(cameraDir);
         transform.rotation = targetRotation;
@@ -122,10 +134,10 @@ public class PlayerController : MonoBehaviour
 
     public Vector3 GetInputDirection()
     {
-        Vector3 camForward = ThirdPersonCam.transform.forward;
+        Vector3 camForward = CurrentCam.transform.forward;
         camForward.y = 0;
         camForward.Normalize();
-        Vector3 camRight = ThirdPersonCam.transform.right;
+        Vector3 camRight = CurrentCam.transform.right;
         camRight.y = 0f;
         camRight.Normalize();
         return camForward * moveInput.y + camRight * moveInput.x;
@@ -133,8 +145,8 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot()
     {
-        GameObject bullet = Instantiate(PlayerSettings.BulletPrefab, firePosition.position, AimingCam.transform.rotation);
-        Ray ray = new Ray(AimingCam.transform.position, AimingCam.transform.forward);
+        GameObject bullet = Instantiate(PlayerSettings.BulletPrefab, firePosition.position, CurrentCam.transform.rotation);
+        Ray ray = new Ray(CurrentCam.transform.position, CurrentCam.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, targetLayers))
         {
             Debug.Log("Hit!");
@@ -143,7 +155,17 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            bullet.GetComponent<Bullet>().SetTargetDir(AimingCam.transform.forward);
+            bullet.GetComponent<Bullet>().SetTargetDir(CurrentCam.transform.forward);
         }
+    }
+
+    public void SwitchCamera(int index)
+    {
+        foreach (CinemachineCamera cam in cameras)
+        {
+            cam.Priority = 0;
+        }
+        cameras[index].Priority = 100;
+        CurrentCam = cameras[index];
     }
 }

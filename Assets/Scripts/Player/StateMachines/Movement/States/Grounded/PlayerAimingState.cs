@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerAimingState : PlayerGroundedState
@@ -16,9 +17,11 @@ public class PlayerAimingState : PlayerGroundedState
         stateMachine.PlayerController.InputController.JumpEvent -= HandleJumpInput;
         stateMachine.PlayerController.InputController.AttackEvent += HandleRangedAttack;
         stateMachine.PlayerController.InputController.LookEvent += HandleLook;
-        stateMachine.PlayerController.AimingCam.Priority = 100;
-        stateMachine.PlayerController.ThirdPersonCamInputController.enabled = false;
-        _lookDirection = stateMachine.PlayerController.ThirdPersonCam.transform.rotation;
+        stateMachine.PlayerController.MoveSpeedFactor = 0.6f;
+        _lookDirection = stateMachine.PlayerController.CurrentCam.transform.rotation;
+        stateMachine.PlayerController.CurrentCam.GetComponent<CinemachineInputAxisController>().enabled = false;
+        stateMachine.PlayerController.SwitchCamera((int)CameraTag.Aiming);
+
     }
 
     public override void Exit()
@@ -26,10 +29,10 @@ public class PlayerAimingState : PlayerGroundedState
         base.Exit();
         stateMachine.PlayerController.InputController.AimCanceledEvent -= EndAiming;
         stateMachine.PlayerController.InputController.AttackEvent -= HandleRangedAttack;
-        stateMachine.PlayerController.AimingCam.Priority = 10;
+        stateMachine.PlayerController.SwitchCamera((int)CameraTag.ThirdPerson);
+        stateMachine.PlayerController.CurrentCam.GetComponent<CinemachineInputAxisController>().enabled = true;
         stateMachine.PlayerController.InputController.LookEvent -= HandleLook;
-        stateMachine.PlayerController.ThirdPersonCamInputController.enabled = true;
-        stateMachine.PlayerController.AimTarget.rotation = Quaternion.identity;
+        stateMachine.PlayerController.MoveSpeedFactor = 1f;
     }
 
     public override void HandleInput()
