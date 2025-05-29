@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerAimingState : PlayerGroundedState
 {
+    private Quaternion _lookDirection;
     public PlayerAimingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
     {
 
@@ -13,29 +14,44 @@ public class PlayerAimingState : PlayerGroundedState
         stateMachine.PlayerController.AlignCamera();
         stateMachine.PlayerController.InputController.AimCanceledEvent += EndAiming;
         stateMachine.PlayerController.InputController.JumpEvent -= HandleJumpInput;
-        stateMachine.PlayerController.InputController.AttackEvent += HanldeRangedAttack;
+        stateMachine.PlayerController.InputController.AttackEvent += HandleRangedAttack;
+        stateMachine.PlayerController.InputController.LookEvent += HandleLook;
         stateMachine.PlayerController.AimingCam.Priority = 100;
+        stateMachine.PlayerController.ThirdPersonCamInputController.enabled = false;
+        _lookDirection = stateMachine.PlayerController.ThirdPersonCam.transform.rotation;
     }
 
     public override void Exit()
     {
         base.Exit();
         stateMachine.PlayerController.InputController.AimCanceledEvent -= EndAiming;
-        stateMachine.PlayerController.InputController.AttackEvent -= HanldeRangedAttack;
+        stateMachine.PlayerController.InputController.AttackEvent -= HandleRangedAttack;
         stateMachine.PlayerController.AimingCam.Priority = 10;
+        stateMachine.PlayerController.InputController.LookEvent -= HandleLook;
+        stateMachine.PlayerController.ThirdPersonCamInputController.enabled = true;
+        stateMachine.PlayerController.AimTarget.rotation = Quaternion.identity;
     }
 
     public override void HandleInput()
     {
-
+        base.HandleInput();
+        stateMachine.PlayerController.RotateCharacter(stateMachine.PlayerController.PlayerSettings.RotationSpeed);
     }
+
+    public override void Update()
+    {
+        base.Update();
+        stateMachine.PlayerController.AimTarget.rotation = _lookDirection;
+    }
+
+
 
     private void EndAiming()
     {
         stateMachine.ChangeState(stateMachine.IdlingState);
     }
 
-    private void HanldeRangedAttack()
+    private void HandleRangedAttack()
     {
         {
             for (int i = 0; i < 3; i++)
@@ -43,5 +59,24 @@ public class PlayerAimingState : PlayerGroundedState
                 stateMachine.PlayerController.Shoot();
             }
         }
+    }
+
+    private void HandleLook(Vector2 lookInput)
+    {
+        float sensitivity = 0.1f;
+        Vector3 currentEuler = stateMachine.PlayerController.AimTarget.rotation.eulerAngles;
+
+        float yaw = currentEuler.y + lookInput.x * sensitivity;
+        float pitch = NormalizeAngle(currentEuler.x - lookInput.y * sensitivity);
+        pitch = Mathf.Clamp(pitch, -80f, 80f);
+        Quaternion targetRotation = Quaternion.Euler(pitch, yaw, 0f);
+
+        _lookDirection = targetRotation;
+    }
+
+    float NormalizeAngle(float angle)
+    {
+        if (angle > 180f) angle -= 360f;
+        return angle;
     }
 }

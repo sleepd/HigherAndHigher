@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController _controller;
     public CinemachineCamera ThirdPersonCam;
+    public CinemachineInputAxisController ThirdPersonCamInputController;
     public CinemachineCamera AimingCam;
+    public Transform AimTarget;
 
     public Animator Animator { get; private set; }
     public InputController InputController;
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         ThirdPersonCam = GameObject.FindWithTag("ThirdPersonCamera").GetComponent<CinemachineCamera>();
+        ThirdPersonCamInputController = ThirdPersonCam.GetComponent<CinemachineInputAxisController>();
         AimingCam = GameObject.FindWithTag("AimCamera").GetComponent<CinemachineCamera>();
         Animator = GetComponent<Animator>();
         _groundCheck = GetComponent<GroundCheck>();
@@ -101,8 +104,11 @@ public class PlayerController : MonoBehaviour
     public void RotateCharacter(float rotationSpeed)
     {
         Vector3 moveDirection = GetInputDirection();
-        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
     }
 
     public void AlignCamera()
@@ -127,16 +133,17 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot()
     {
-        GameObject bullet = Instantiate(PlayerSettings.BulletPrefab, firePosition.position, ThirdPersonCam.transform.rotation);
-        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f + aimOffsetY * Screen.height, 0));
+        GameObject bullet = Instantiate(PlayerSettings.BulletPrefab, firePosition.position, AimingCam.transform.rotation);
+        Ray ray = new Ray(AimingCam.transform.position, AimingCam.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, targetLayers))
         {
+            Debug.Log("Hit!");
             Vector3 hitPoint = hit.point;
             bullet.GetComponent<Bullet>().SetTargetPosition(hitPoint);
         }
         else
         {
-            bullet.GetComponent<Bullet>().SetTargetDir(ThirdPersonCam.transform.forward);
+            bullet.GetComponent<Bullet>().SetTargetDir(AimingCam.transform.forward);
         }
     }
 }

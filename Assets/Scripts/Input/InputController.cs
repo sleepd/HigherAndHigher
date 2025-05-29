@@ -27,6 +27,7 @@ public class InputController : MonoBehaviour
         _input.Player.Enable();
         _input.Player.Move.performed += OnMovePerformed;
         _input.Player.Move.canceled += OnMoveCanceled;
+        _input.Player.Look.performed += OnLookPerformed;
         _input.Player.Jump.performed += OnJumpPerformed;
         _input.Player.Jump.canceled += OnJumpCanceled;
         _input.Player.Attack.performed += OnAttackPerformed;
@@ -57,6 +58,11 @@ public class InputController : MonoBehaviour
         MoveEvent?.Invoke(Vector2.zero);
     }
 
+    private void OnLookPerformed(InputAction.CallbackContext context)
+    {
+        LookEvent?.Invoke(context.ReadValue<Vector2>());
+    }
+
     private void OnJumpPerformed(InputAction.CallbackContext context)
     {
         JumpEvent?.Invoke();
@@ -83,6 +89,7 @@ public class InputController : MonoBehaviour
     {
         _input.Player.Move.performed -= OnMovePerformed;
         _input.Player.Move.canceled -= OnMoveCanceled;
+        _input.Player.Look.performed -= OnLookPerformed;
         _input.Player.Jump.performed -= OnJumpPerformed;
         _input.Player.Jump.canceled -= OnJumpCanceled;
         _input.Player.Attack.performed -= OnAttackPerformed;
