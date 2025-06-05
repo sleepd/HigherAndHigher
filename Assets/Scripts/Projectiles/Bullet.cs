@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] float turnSpeed = 10f;
     [SerializeField] float lifeTime = 5f;
     [SerializeField] VisualEffect bulletVFX;
+    [SerializeField] int damege = 1;
     private Vector3 targetPosition;
     private Vector3 targetDir;
     private bool hasTarget = false;
@@ -71,6 +72,11 @@ public class Bullet : MonoBehaviour
         _isAlive = false;
         // reduce the age
         if (lifeTime - _age > 1f) _age = lifeTime - 1f;
+        IDestructible destructible = other.gameObject.GetComponent<IDestructible>();
+        if (destructible != null)
+        {
+            destructible.TakeDamage(damege);
+        }
     }
 
     void Die()
