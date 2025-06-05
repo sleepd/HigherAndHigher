@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/InGameUI.uss?fileID=7433441132597879392&amp;guid=0193bb0812bc22948aa500f9a57b3206&amp;type=3#InGameUI" />
+    <ui:VisualElement name="CrosshairRoot" style="flex-grow: 1; justify-content: center; align-items: center;">
+        <ui:VisualElement name="Crosshair" style="flex-grow: 1; background-color: rgb(181, 181, 181); width: 8px; height: 8px; min-height: 8px; max-height: 8px; border-top-left-radius: 100%; border-top-right-radius: 100%; border-bottom-right-radius: 100%; border-bottom-left-radius: 100%; min-width: 8px; max-width: 8px; top: auto; left: auto; align-self: auto;" />
+    </ui:VisualElement>
+</ui:UXML>
