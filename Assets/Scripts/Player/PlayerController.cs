@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,8 @@ public class PlayerController : MonoBehaviour
     LayerMask targetLayers;
     [SerializeField] Transform firePosition;
     [SerializeField] float aimOffsetY = 0f;
+
+    private float _fireCooldowe = 0;
 
 
     void Awake()
@@ -101,6 +104,11 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDelta = _rootMotionDelta + velocity * Time.deltaTime;
         CharacterController.Move(moveDelta);
 
+        // handle fire cooldown
+        if (_fireCooldowe > 0)
+        {
+            _fireCooldowe = MathF.Max(0, _fireCooldowe - Time.deltaTime);
+        }
     }
 
     void FixedUpdate()
@@ -143,19 +151,26 @@ public class PlayerController : MonoBehaviour
         return camForward * moveInput.y + camRight * moveInput.x;
     }
 
-    public void Shoot()
+    public void Shoot(int number)
     {
-        GameObject bullet = Instantiate(PlayerSettings.BulletPrefab, firePosition.position, CurrentCam.transform.rotation);
-        Ray ray = new Ray(CurrentCam.transform.position, CurrentCam.transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, targetLayers))
+        if (_fireCooldowe == 0)
         {
-            Debug.Log("Hit!");
-            Vector3 hitPoint = hit.point;
-            bullet.GetComponent<Bullet>().SetTargetPosition(hitPoint);
-        }
-        else
-        {
-            bullet.GetComponent<Bullet>().SetTargetDir(CurrentCam.transform.forward);
+            for (int i = 0; i < number; i++)
+            {
+
+                GameObject bullet = Instantiate(PlayerSettings.BulletPrefab, firePosition.position, CurrentCam.transform.rotation);
+                Ray ray = new Ray(CurrentCam.transform.position, CurrentCam.transform.forward);
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, targetLayers))
+                {
+                    Vector3 hitPoint = hit.point;
+                    bullet.GetComponent<Bullet>().SetTargetPosition(hitPoint);
+                }
+                else
+                {
+                    bullet.GetComponent<Bullet>().SetTargetDir(CurrentCam.transform.forward);
+                }
+            }
+            _fireCooldowe = PlayerSettings.fireRate;
         }
     }
 

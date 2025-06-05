@@ -58,12 +58,7 @@ public class PlayerAimingState : PlayerGroundedState
 
     private void HandleRangedAttack()
     {
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                stateMachine.PlayerController.Shoot();
-            }
-        }
+        stateMachine.PlayerController.Shoot(3);
     }
 
     private void HandleLook(Vector2 lookInput)
