@@ -1,13 +1,20 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField] float speed = 10f;
+    [SerializeField] float turnSpeed = 10f;
     [SerializeField] float lifeTime = 5f;
+    [SerializeField] VisualEffect bulletVFX;
     private Vector3 targetPosition;
     private Vector3 targetDir;
     private bool hasTarget = false;
     private Rigidbody rb;
+    private float _age;
+    private bool _isAlive = true;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,24 +26,32 @@ public class Bullet : MonoBehaviour
         Vector3 newDir = RandomDirectionWithinAngle(transform.up, 90);
         transform.rotation = Quaternion.LookRotation(newDir);
         rb = GetComponent<Rigidbody>();
-        rb.linearVelocity = transform.forward * speed * 10000f;
+        bulletVFX.SetFloat("LifeTime", lifeTime);
+        bulletVFX.SendEvent("OnPlay");
     }
 
     // Update is called once per frame
     void Update()
     {
-        lifeTime -= Time.deltaTime;
-        if (lifeTime <= 0) Die();
+        _age += Time.deltaTime;
+        bulletVFX.SetFloat("Age", _age);
+        if (_age >= lifeTime) Die();
+
+        if (_isAlive)
+        {
+            Vector3 direction;
+            if (hasTarget) direction = (targetPosition - transform.position).normalized;
+            else direction = targetDir;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
+            // turnSpeed *= turnSpeed;
+        }
     }
 
     void FixedUpdate()
     {
-        Vector3 direction;
-
-        if (hasTarget) direction = (targetPosition - transform.position).normalized;
-        else direction = targetDir;
-
-        rb.AddForce(direction * speed * Time.deltaTime);
+        if(_isAlive) rb.linearVelocity = transform.forward * speed;
     }
 
 
@@ -52,23 +67,22 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Die();
+        rb.linearVelocity = Vector3.zero;
+        _isAlive = false;
+        // reduce the age
+        if (lifeTime - _age > 1f) _age = lifeTime - 1f;
     }
 
     void Die()
     {
+        // check the vfx age, if 
         Destroy(gameObject);
     }
 
     Vector3 RandomDirectionWithinAngle(Vector3 forward, float maxAngleDegrees)
     {
-        // 随机一个角度范围内的旋转轴（避免只绕Y轴）
         Vector3 randomAxis = Random.onUnitSphere;
-
-        // 生成一个随机角度（±范围内）
         float randomAngle = Random.Range(-maxAngleDegrees, maxAngleDegrees);
-
-        // 绕这个轴旋转 forward 向量
         return Quaternion.AngleAxis(randomAngle, randomAxis) * forward;
     }
 }
