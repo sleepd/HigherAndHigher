@@ -45,6 +45,8 @@ public class PlayerAimingState : PlayerGroundedState
     {
         base.Update();
         stateMachine.PlayerController.AimTarget.rotation = _lookDirection;
+        // maybe I should cache this, sync the 3rd person camera
+        stateMachine.PlayerController.cameras[0].GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value = stateMachine.PlayerController.CurrentCam.transform.rotation.eulerAngles.y;
     }
 
 
