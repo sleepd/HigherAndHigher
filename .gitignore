@@ -2,3 +2,6 @@ Temp/
 UserSettings/
 *.csproj
 *.sln
+Assets/Models/Animations/Ellen/
+Assets/Models/Animations/
+Assets/Models/Animations.meta
