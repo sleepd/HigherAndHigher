@@ -12,6 +12,7 @@ public class PlayerGroundedState : PlayerMovementState
         base.Enter();
         stateMachine.PlayerController.InputController.JumpEvent += HandleJumpInput;
         stateMachine.PlayerController.InputController.AimEvent += HandleAim;
+        stateMachine.PlayerController.InputController.InteractEvent += HandleInteract;
     }
 
 
@@ -21,6 +22,7 @@ public class PlayerGroundedState : PlayerMovementState
         base.Exit();
         stateMachine.PlayerController.InputController.JumpEvent -= HandleJumpInput;
         stateMachine.PlayerController.InputController.AimEvent -= HandleAim;
+        stateMachine.PlayerController.InputController.InteractEvent -= HandleInteract;
     }
 
     public override void Update()
@@ -43,10 +45,33 @@ public class PlayerGroundedState : PlayerMovementState
     {
         stateMachine.ChangeState(stateMachine.JumpState);
     }
-    
+
     protected void HandleAim()
     {
         stateMachine.ChangeState(stateMachine.AimingState);
+    }
+
+    protected void HandleInteract()
+    {
+        Debug.Log("Try to interact!");
+        Vector3 origin = stateMachine.PlayerController.transform.position + Vector3.up * 1.0f;
+        Vector3 direction =stateMachine.PlayerController.transform.forward;
+        Vector3 checkPosition = origin + direction * 1f;
+        float radius = 10f;
+        int layerMask = 1 << 11;
+
+        Collider[] hits = Physics.OverlapSphere(checkPosition, radius, layerMask, QueryTriggerInteraction.Collide);
+
+
+        foreach (Collider hit in hits)
+        {
+            Debug.Log("hit!");
+            IInteractable interactable = hit.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                interactable.Interact();
+            }
+        }
     }
 
 }
