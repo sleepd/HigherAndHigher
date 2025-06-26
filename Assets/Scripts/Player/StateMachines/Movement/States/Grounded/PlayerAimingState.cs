@@ -22,6 +22,8 @@ public class PlayerAimingState : PlayerGroundedState
         stateMachine.PlayerController.CurrentCam.GetComponent<CinemachineInputAxisController>().enabled = false;
         stateMachine.PlayerController.SwitchCamera((int)CameraTag.Aiming);
 
+        stateMachine.PlayerController.Animator.SetBool("Aiming", true);
+
     }
 
     public override void Exit()
@@ -33,6 +35,7 @@ public class PlayerAimingState : PlayerGroundedState
         stateMachine.PlayerController.CurrentCam.GetComponent<CinemachineInputAxisController>().enabled = true;
         stateMachine.PlayerController.InputController.LookEvent -= HandleLook;
         stateMachine.PlayerController.MoveSpeedFactor = 1f;
+        stateMachine.PlayerController.Animator.SetBool("Aiming", false);
     }
 
     public override void HandleInput()
