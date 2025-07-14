@@ -2,21 +2,12 @@ using UnityEngine;
 
 public class InteractableButton : MonoBehaviour, IInteractable
 {
-    [SerializeField] TargetManager targetManager;
+    [SerializeField] ControlledObject[] controlledObjects;
     public void Interact()
     {
-        targetManager.ShowTargets();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        foreach (ControlledObject go in controlledObjects)
+        {
+            go.Active();
+        }
     }
 }

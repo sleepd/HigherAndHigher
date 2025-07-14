@@ -5,10 +5,12 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
+    [SerializeField] float chaseSpeed;
     [SerializeField] int maxHealth;
     [SerializeField] float detectRadius;
     [SerializeField] List<Vector3> waypoints;
     [SerializeField] float attackRange;
+    [SerializeField] Animator animator;
 
     private EnemyState _state;
     public EnemyState State { get => _state; }
@@ -26,6 +28,7 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     private int _targetWaypointIndex = 1;
     private bool isAttackAnimationPlaying = false;
+    // private PlayerController GameManager.Instance.Player;
 
 
 
@@ -34,6 +37,7 @@ public class Enemy : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _state = EnemyState.idle;
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        // GameManager.Instance.Player = GameManager.Instance.Player;
     }
 
     // Update is called once per frame
@@ -58,12 +62,9 @@ public class Enemy : MonoBehaviour
 
     void HandleIdle()
     {
-        Debug.Log("Enemy state: Idle");
-
         if (waypoints.Count > 0)
         {
-            _state = EnemyState.Patrol;
-            _navMeshAgent.SetDestination(waypoints[_targetWaypointIndex]);
+            EnterPatrol();
         }
     }
 
@@ -71,7 +72,7 @@ public class Enemy : MonoBehaviour
     {
         if (IsPlayerInSight())
         {
-            _state = EnemyState.Chase;
+            EnterChase();
             return;
         }
 
@@ -87,12 +88,11 @@ public class Enemy : MonoBehaviour
 
     void HandleChase()
     {
-        Debug.Log("Enemy state: Chase");
-        _navMeshAgent.SetDestination(GameManager.Instance.player.transform.position);
+        _navMeshAgent.SetDestination(GameManager.Instance.Player.transform.position);
 
         if (IsPlayerInAttackRange())
         {
-            _state = EnemyState.Attack;
+            EnterAttack();
         }
 
         // do a player detect check at here
@@ -102,17 +102,13 @@ public class Enemy : MonoBehaviour
     {
         if (!IsPlayerInAttackRange() && !isAttackAnimationPlaying)
         {
-            _state = EnemyState.Chase;
+            EnterChase();
             return;
         }
 
         if (isAttackAnimationPlaying) return;
 
-        Debug.Log("Enemey state: Attack");
-        // tell animator play the attack animation
-        isAttackAnimationPlaying = true;
-
-        
+        Attack();
     }
 
     void Die()
@@ -122,21 +118,57 @@ public class Enemy : MonoBehaviour
 
     bool IsPlayerInSight()
     {
-        if (Vector3.Distance(transform.position, GameManager.Instance.player.transform.position) > detectRadius) return false;
+        if (Vector3.Distance(transform.position, GameManager.Instance.Player.transform.position) > detectRadius) return false;
 
-        if (Vector3.Dot(transform.forward, GameManager.Instance.player.transform.position - transform.position) < -0.5f) return false;
+        if (Vector3.Dot(transform.forward, GameManager.Instance.Player.transform.position - transform.position) < -0.5f) return false;
 
         return true;
     }
 
     bool IsPlayerInAttackRange()
     {
-        if (Vector3.Distance(transform.position, GameManager.Instance.player.transform.position) < attackRange) return true;
+        if (Vector3.Distance(transform.position, GameManager.Instance.Player.transform.position) < attackRange) return true;
         else return false;
     }
 
     void OnAttackAnimationFinished()
     {
         isAttackAnimationPlaying = false;
+    }
+
+    void EnterIdle()
+    {
+
+    }
+
+    void EnterPatrol()
+    {
+        _state = EnemyState.Patrol;
+        animator.SetFloat("Speed", 0.5f);
+        _navMeshAgent.speed = moveSpeed;
+        _navMeshAgent.SetDestination(waypoints[_targetWaypointIndex]);
+    }
+
+    void EnterChase()
+    {
+        Debug.Log("Enemy state: Chase");
+        _navMeshAgent.isStopped = false;
+        _state = EnemyState.Chase;
+        animator.SetFloat("Speed", 1f);
+        _navMeshAgent.speed = chaseSpeed;
+    }
+
+    void EnterAttack()
+    {
+        Debug.Log("Enemey state: Attack");
+        _navMeshAgent.isStopped = true;
+        _state = EnemyState.Attack;
+        Attack();
+    }
+
+    void Attack()
+    {
+        animator.SetTrigger("Attack");
+        isAttackAnimationPlaying = true;
     }
 }
