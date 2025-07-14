@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController _controller;
     public List<CinemachineCamera> cameras;
-    
+
     // public CinemachineCamera ThirdPersonCam;
     // public CinemachineInputAxisController ThirdPersonCamInputController;
     // public CinemachineCamera AimingCam;
@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float aimOffsetY = 0f;
 
     private float _fireCooldowe = 0;
+
+    private float moveFactor = 1f;
 
 
     void Awake()
@@ -102,7 +104,8 @@ public class PlayerController : MonoBehaviour
 
         // move character
         Vector3 moveDelta = _rootMotionDelta + velocity * Time.deltaTime;
-        CharacterController.Move(moveDelta);
+        moveDelta *= moveFactor;
+        if (moveDelta != Vector3.zero) CharacterController.Move(moveDelta);
 
         // handle fire cooldown
         if (_fireCooldowe > 0)
@@ -182,5 +185,23 @@ public class PlayerController : MonoBehaviour
         }
         cameras[index].Priority = 100;
         CurrentCam = cameras[index];
+    }
+
+    public void TakeDamege()
+    {
+        Debug.Log("22222222222");
+        // die!
+        Die();
+    }
+
+    private void Die()
+    {
+        moveFactor = 0;
+        GameManager.Instance.CurrentLevelManager.ResetPlayer();
+    }
+
+    public void ResetState()
+    {
+        moveFactor = 1;
     }
 }

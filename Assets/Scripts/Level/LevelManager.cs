@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -37,8 +38,15 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void ResetPlayer()
+    public void ResetPlayer()
+    {
+        StartCoroutine(ResetPlayerCoroutine());
+    }
+
+    IEnumerator ResetPlayerCoroutine()
     {
         _player.transform.position = _startPosition;
+        yield return new WaitForSeconds(0.1f);
+        _player.ResetState();
     }
 }
