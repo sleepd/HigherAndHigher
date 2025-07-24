@@ -1,28 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance { get; private set; }
     public PlayerController Player { get; private set; }
     public LevelManager CurrentLevelManager { get; private set; }
 
-    void Awake()
+    private GameManagerStateMachine stateMachine;
+
+    public override void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        // Initialize scene except it's not a game scene
-        if (IsGameScene(SceneManager.GetActiveScene()))
-        {
-            InitializeCurrentScene();
-        }
+        base.Awake();
+        stateMachine = new();
     }
 
     public void LoadLevel(string levelName)
@@ -68,9 +57,9 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private bool IsGameScene(Scene scene)
+    void Update()
     {
-        return scene.name.StartsWith("Level");
+        stateMachine.Update();
     }
 
     private void ForceQuit()
