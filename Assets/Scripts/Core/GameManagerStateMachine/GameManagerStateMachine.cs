@@ -6,6 +6,7 @@ public class GameManagerStateMachine : StateMachine
     public GamePlayingState gamePlayingState { get; }
     public GamePausedState GamePausedState { get; }
     public GameOverState gameOverState { get; }
+    public GameMainMenuState gameMainMenuState { get; }
 
     public GameManagerStateMachine()
     {
@@ -13,5 +14,6 @@ public class GameManagerStateMachine : StateMachine
         gamePlayingState = new(this);
         GamePausedState = new(this);
         gameOverState = new(this);
+        gameMainMenuState = new(this);
     }
 }

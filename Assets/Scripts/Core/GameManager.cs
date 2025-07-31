@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,23 +8,52 @@ public class GameManager : Singleton<GameManager>
     public LevelManager CurrentLevelManager { get; private set; }
 
     private GameManagerStateMachine stateMachine;
+    public string currentSceneName { get; private set; }
 
     public override void Awake()
     {
         base.Awake();
         stateMachine = new();
+        stateMachine.ChangeState(stateMachine.gameMainMenuState);
     }
 
-    public void LoadLevel(string levelName)
+    public void LoadScene(string newScene)
     {
-        SceneManager.LoadScene(levelName);
-        SceneManager.sceneLoaded += OnLevelLoaded;
+        StartCoroutine(LoadSceneRoutine(newScene));
     }
 
-    private void OnLevelLoaded(Scene scene, LoadSceneMode mode)
+    public void UnloadCurrentScene()
     {
-        InitializeCurrentScene();
-        SceneManager.sceneLoaded -= OnLevelLoaded;
+        StartCoroutine(UnloadSceneRoutine());
+    }
+    
+
+    private IEnumerator LoadSceneRoutine(string newScene)
+    {
+        // todo: show a loading screen
+
+        AsyncOperation op = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
+        while (!op.isDone)
+        {
+            yield return null;
+        }
+
+        // Active new scene
+        Scene loadedScene = SceneManager.GetSceneByName(newScene);
+        SceneManager.SetActiveScene(loadedScene);
+
+        currentSceneName = newScene;
+    }
+
+    private IEnumerator UnloadSceneRoutine()
+    {
+        // todo: show a loading screen
+        
+        if (!string.IsNullOrEmpty(currentSceneName))
+        {
+            yield return SceneManager.UnloadSceneAsync(currentSceneName);
+            currentSceneName = null;
+        }
     }
 
     private void InitializeCurrentScene()

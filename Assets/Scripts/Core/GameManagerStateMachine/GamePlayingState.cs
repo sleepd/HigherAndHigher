@@ -7,6 +7,12 @@ public class GamePlayingState : GameManagerState
 
     }
 
+    public override void Enter()
+    {
+        base.Enter();
+        GameManager.Instance.LoadScene(GameManager.Instance.currentSceneName);
+    }
+
     public override void Update()
     {
         base.Update();
@@ -15,5 +21,11 @@ public class GamePlayingState : GameManagerState
 
         // life check
         Debug.Log("Checking player health...");
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        GameManager.Instance.UnloadCurrentScene();
     }
 }
