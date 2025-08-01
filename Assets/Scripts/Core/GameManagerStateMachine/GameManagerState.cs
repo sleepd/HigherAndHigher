@@ -10,12 +10,12 @@ public class GameManagerState : IState
 
     public virtual void Enter()
     {
-
+        Debug.Log($"[FSM] Entering {this.GetType().Name}");
     }
 
     public virtual void Exit()
     {
-        
+        Debug.Log($"[FSM] Exiting {this.GetType().Name}");
     }
 
     public virtual void HandleInput()

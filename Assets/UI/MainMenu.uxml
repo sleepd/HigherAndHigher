@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MainMenu.uss?fileID=7433441132597879392&amp;guid=f1c9bfe5031bfbf448c06986dd225ae1&amp;type=3#MainMenu" />
+    <ui:VisualElement name="MainMenuRoot" style="flex-grow: 1;">
+        <ui:Label text="Game Title Here" name="Label" style="font-size: 200px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(255, 221, 0);" />
+        <ui:Button text="Continue" name="ContinueButton" style="font-size: 50px;" />
+        <ui:Button text="Start Game" name="StartGameButton" style="font-size: 50px;" />
+        <ui:Button text="Options" name="OptionsButton" style="font-size: 50px;" />
+        <ui:Button text="Exit Game" name="ExitGameButton" style="font-size: 50px;" />
+    </ui:VisualElement>
+</ui:UXML>

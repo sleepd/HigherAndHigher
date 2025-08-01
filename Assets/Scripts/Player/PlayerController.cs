@@ -54,7 +54,6 @@ public class PlayerController : MonoBehaviour
         cameras = new();
         cameras.Add(GameObject.FindWithTag("ThirdPersonCamera").GetComponent<CinemachineCamera>());
         cameras.Add(GameObject.FindWithTag("AimCamera").GetComponent<CinemachineCamera>());
-        Debug.Log(cameras.Count);
         CurrentCam = cameras[0];
         Animator = GetComponent<Animator>();
         _groundCheck = GetComponent<GroundCheck>();

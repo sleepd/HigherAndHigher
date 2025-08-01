@@ -10,7 +10,7 @@ public class GamePlayingState : GameManagerState
     public override void Enter()
     {
         base.Enter();
-        GameManager.Instance.LoadScene(GameManager.Instance.currentSceneName);
+        GameManager.Instance.InitializeCurrentScene();
     }
 
     public override void Update()
@@ -26,6 +26,5 @@ public class GamePlayingState : GameManagerState
     public override void Exit()
     {
         base.Exit();
-        GameManager.Instance.UnloadCurrentScene();
     }
 }

@@ -14,15 +14,52 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         stateMachine = new();
-        stateMachine.ChangeState(stateMachine.gameMainMenuState);
+
+        // load mainMenu scene if game started from manager scene
+        if (SceneManager.sceneCount == 1)
+        {
+            LoadScene(Level.mainMenu);
+            stateMachine.ChangeState(stateMachine.gameMainMenuState);
+        }
     }
 
-    public void LoadScene(string newScene)
+    /// <summary>
+    /// Start a new game, will load level01 by default
+    /// </summary>
+    public void LoadLevel(string levelName = Level.level01)
+    {
+        Debug.Log($"Load Level {levelName}");
+        UnloadCurrentScene();
+        LoadScene(levelName);
+        stateMachine.ChangeState(stateMachine.gamePlayingState);
+    }
+
+    /// <summary>
+    /// Load the latest saved game
+    /// </summary>
+    public void ContinueGame()
+    {
+        Debug.Log("Continue Game!");
+    }
+
+    public void LoadGame()
+    {
+
+    }
+
+    /// <summary>
+    /// Load and attach a scene to manager scene
+    /// </summary>
+    /// <param name="newScene">The name of scene to load</param>
+    private void LoadScene(string newScene)
     {
         StartCoroutine(LoadSceneRoutine(newScene));
     }
 
-    public void UnloadCurrentScene()
+    /// <summary>
+    /// Unload a attached scene
+    /// </summary>
+    private void UnloadCurrentScene()
     {
         StartCoroutine(UnloadSceneRoutine());
     }
@@ -30,6 +67,7 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator LoadSceneRoutine(string newScene)
     {
+        currentSceneName = newScene;
         // todo: show a loading screen
 
         AsyncOperation op = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
@@ -42,7 +80,7 @@ public class GameManager : Singleton<GameManager>
         Scene loadedScene = SceneManager.GetSceneByName(newScene);
         SceneManager.SetActiveScene(loadedScene);
 
-        currentSceneName = newScene;
+        
     }
 
     private IEnumerator UnloadSceneRoutine()
@@ -56,7 +94,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void InitializeCurrentScene()
+    public void InitializeCurrentScene()
     {
         CurrentLevelManager = FindAnyObjectByType<LevelManager>();
 
@@ -84,7 +122,6 @@ public class GameManager : Singleton<GameManager>
         }
 
         CurrentLevelManager.OnLevelStart();
-
     }
 
     void Update()
